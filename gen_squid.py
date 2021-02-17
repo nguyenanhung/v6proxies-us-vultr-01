@@ -151,6 +151,7 @@ squid_conf_suffix = '''
     http_access deny !Safe_ports
 
     http_access deny CONNECT !SSL_ports
+    http_access allow SSL_ports
     
     http_access allow localhost manager
     http_access allow manager
