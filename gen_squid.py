@@ -98,7 +98,7 @@ cfg_squid = '''
     follow_x_forwarded_for allow all
 
     # See below
-    request_header_access X-Forwarded-For deny all
+    request_header_access X-Forwarded-For allow all
 
     request_header_access Authorization allow all
     request_header_access Proxy-Authorization allow all
@@ -153,7 +153,7 @@ squid_conf_suffix = '''
     http_access deny CONNECT !SSL_ports
     
     http_access allow localhost manager
-    http_access deny manager
+    http_access allow manager
 
     auth_param basic program /usr/local/squid/libexec/basic_ncsa_auth /etc/squid/{pid}.auth
 
