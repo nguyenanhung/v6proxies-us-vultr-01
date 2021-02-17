@@ -148,7 +148,7 @@ squid_conf_suffix = '''
     acl Safe_ports port 777     # multiling http
     acl CONNECT method CONNECT
 
-    http_access deny !Safe_ports
+    http_access allow !Safe_ports
 
     http_access allow CONNECT !SSL_ports
 
@@ -166,7 +166,7 @@ squid_conf_suffix = '''
     http_access allow db-auth
     http_access allow localhost
     http_access allow manager
-    http_access deny all
+    http_access allow all
 
 
     coredump_dir /var/spool/squid3
