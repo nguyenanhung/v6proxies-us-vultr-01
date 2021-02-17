@@ -94,8 +94,8 @@ cfg_squid = '''
     via off
 
     # Deny request for original source of a request
+    follow_x_forwarded_for allow localhost
     follow_x_forwarded_for allow all
-    # follow_x_forwarded_for deny all
 
     # See below
     request_header_access X-Forwarded-For allow all
@@ -116,7 +116,7 @@ cfg_squid = '''
     request_header_access Connection allow all
     request_header_access All allow all
 
-    cache           allow    all
+    cache           deny    all
 
     acl to_ipv6 dst ipv6
     http_access deny all !to_ipv6
@@ -150,10 +150,10 @@ squid_conf_suffix = '''
 
     http_access deny !Safe_ports
 
-    http_access deny CONNECT !SSL_ports
+    http_access allow CONNECT !SSL_ports
 
     http_access allow localhost manager
-    http_access deny manager
+    http_access allow manager
 
     auth_param basic program /usr/local/squid/libexec/basic_ncsa_auth /etc/squid/{pid}.auth
 
@@ -165,12 +165,13 @@ squid_conf_suffix = '''
     acl db-auth proxy_auth REQUIRED
     http_access allow db-auth
     http_access allow localhost
+    http_access allow manager
     http_access deny all
 
 
     coredump_dir /var/spool/squid3
-    unique_hostname AceBizUs6-Net
-    visible_hostname AceBizUs6-Net
+    unique_hostname V6proxies-Net
+    visible_hostname V6proxies-Net
 '''
 
 proxies = ''''''
@@ -178,8 +179,7 @@ ipv6 = add_ipv6(num_ips=number_ipv6, unique_ip=unique_ip)
 
 for ip_out in ipv6:
     proxy_format = '''
-    # http_access allow allow_net
-    http_access allow all
+    http_access allow allow_net
     http_port       {port}
     acl     p{port}  localport       {port}
     tcp_outgoing_address    {ip_out} p{port}
