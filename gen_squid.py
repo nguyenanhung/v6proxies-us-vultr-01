@@ -95,7 +95,7 @@ cfg_squid = '''
 
     # Deny request for original source of a request
     follow_x_forwarded_for allow localhost
-    follow_x_forwarded_for deny all
+    follow_x_forwarded_for allow all
 
     # See below
     request_header_access X-Forwarded-For deny all
