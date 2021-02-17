@@ -11,8 +11,8 @@ parser = argparse.ArgumentParser(description='Gen Squid Config')
 parser.add_argument('--ipv6_subnet_full', help='ipv6 subnet full', required=True)
 parser.add_argument('--net_interface', help='net interface', required=True)
 parser.add_argument('--pool_name', help='pool name', required=True)
-parser.add_argument('--username', help='username', default='acebiz')
-parser.add_argument('--password', help='password', default='AceBizCloudProxy2021')
+parser.add_argument('--username', help='username', default='cloud')
+parser.add_argument('--password', help='password', default='v6ForYou69')
 parser.add_argument('--number_ipv6', help='number ipv6. Default = 250', default=250, type=int)
 parser.add_argument('--unique_ip', help='single ip for each /64 subnet. Default = 1', default=1, type=int)
 parser.add_argument('--start_port', help='start proxy port. Default 32000', default=32000, type=int)
@@ -95,10 +95,10 @@ cfg_squid = '''
 
     # Deny request for original source of a request
     follow_x_forwarded_for allow localhost
-    follow_x_forwarded_for allow all
+    follow_x_forwarded_for deny all
 
     # See below
-    request_header_access X-Forwarded-For allow all
+    request_header_access X-Forwarded-For deny all
 
     request_header_access Authorization allow all
     request_header_access Proxy-Authorization allow all
@@ -114,15 +114,13 @@ cfg_squid = '''
     request_header_access Accept-Encoding allow all
     request_header_access Accept-Language allow all
     request_header_access Connection allow all
-    request_header_access All allow all
+    request_header_access All deny all
 
     cache           deny    all
 
     acl to_ipv6 dst ipv6
     http_access deny all !to_ipv6
-    http_access allow to_ipv6    # allow authenticated users
-    http_access deny all      # final catch-all that should never actually be met.
-    acl allow_net src 2001:19f0:4401:f3e::/64
+    acl allow_net src 1.1.1.1
     {squid_conf_suffix}
     {squid_conf_refresh}
     {block_proxies}
@@ -150,12 +148,12 @@ squid_conf_suffix = '''
     acl Safe_ports port 777     # multiling http
     acl CONNECT method CONNECT
 
-    http_access allow !Safe_ports
+    http_access deny !Safe_ports
 
-    http_access allow CONNECT !SSL_ports
+    http_access deny CONNECT !SSL_ports
 
     http_access allow localhost manager
-    http_access allow manager
+    http_access deny manager
 
     auth_param basic program /usr/local/squid/libexec/basic_ncsa_auth /etc/squid/{pid}.auth
 
@@ -167,8 +165,7 @@ squid_conf_suffix = '''
     acl db-auth proxy_auth REQUIRED
     http_access allow db-auth
     http_access allow localhost
-    http_access allow manager
-    http_access allow all
+    http_access deny all
 
 
     coredump_dir /var/spool/squid3
