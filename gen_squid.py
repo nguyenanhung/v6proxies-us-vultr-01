@@ -150,7 +150,7 @@ squid_conf_suffix = '''
 
     http_access deny !Safe_ports
 
-    # http_access deny CONNECT !SSL_ports
+    http_access deny CONNECT !SSL_ports
     
     http_access allow localhost manager
     http_access deny manager
@@ -164,8 +164,9 @@ squid_conf_suffix = '''
 
     acl db-auth proxy_auth REQUIRED
     http_access allow db-auth
+    http_access allow proxy_auth
     http_access allow localhost
-    http_access deny all
+    http_access allow all
 
 
     coredump_dir /var/spool/squid3
