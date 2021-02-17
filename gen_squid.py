@@ -114,7 +114,7 @@ cfg_squid = '''
     request_header_access Accept-Encoding allow all
     request_header_access Accept-Language allow all
     request_header_access Connection allow all
-    request_header_access All deny all
+    request_header_access All allow all
 
     cache           deny    all
 
